@@ -1,17 +1,21 @@
 section .data
   string db "teste", 0xa, 0
 
-%define string_len equ ($ - string)
-
 section .text
   global _start
 
-_start:
+println:
   MOV rax, 1
   MOV rdi, 1
-  MOV rsi, string
+  ; we can use rsi as parameter here, so code below is not needed
+  ; MOV rsi, string
   MOV rdx, 6
   SYSCALL
+  RET
+
+_start:
+  MOV rsi, string
+  CALL println
 
   MOV rax, 60
   MOV rdi, 0
