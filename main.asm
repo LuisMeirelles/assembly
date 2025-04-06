@@ -1,5 +1,11 @@
+%macro EXIT 1
+  MOV rax, 60 ; exit syscall
+  MOV rdi, %1
+  SYSCALL
+%endmacro
+
 section .data
-  string db "testando", 0xa, 0
+string db "testando", 0xa, 0
 
 section .text
   global _start
@@ -27,7 +33,5 @@ _start:
   LEA rsi, [rel string] ; loading relative address of string head to %rsi
   CALL println
 
-  MOV rax, 60 ; exit syscall
-  MOV rdi, 0 ; exit code
-  SYSCALL
+  EXIT 0
 
