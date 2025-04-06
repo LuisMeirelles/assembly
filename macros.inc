@@ -5,6 +5,6 @@
 %endmacro
 
 %macro PRINT 1
-  LEA rsi, [rel %1] ; loading relative address of string head to %rsi
-  CALL println
+  LEA rdi, [rel %1] ; loading relative address of string head to %rdi
+  CALL print
 %endmacro

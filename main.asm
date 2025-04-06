@@ -1,7 +1,7 @@
 %include "macros.inc"
 
 section .data
-  string db "testando", 0xa, 0
+  string db "teste", 0xa, 0
 
 section .text
   global _start
@@ -10,11 +10,12 @@ _start:
   PRINT string
   EXIT 0
 
-println:
-  MOVZX eax, byte [rsi] ; moves zero-extended version of the byte that %rsi is pointing to
-  TEST al, al
+print:
+  MOVZX eax, byte [rdi] ; moves zero-extended version of the byte that %rdi is pointing to
+  CMP al, 0
   JE .end_println
 
+  MOV rsi, rdi
   MOV rax, 1 ; write syscall
   MOV rdi, 1 ; stdout
  
@@ -22,7 +23,10 @@ println:
   SYSCALL
 
   INC rsi
-  JMP println
+
+  ; pass the pointer to the next char to print()
+  MOV rdi, rsi
+  JMP print
 
   .end_println: RET
 
