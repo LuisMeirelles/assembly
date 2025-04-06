@@ -28,7 +28,7 @@ local function open_floating_terminal(cmd)
 end
 
 function M.compile()
-	local output = vim.system({ "nasm", "-felf64", "main.asm" }, { text = true }):wait()
+	local output = vim.system({ "nasm", "-g", "-felf64", "main.asm" }, { text = true }):wait()
 
 	if output.code ~= 0 then
 		vim.notify(output.stderr, vim.log.levels.ERROR)

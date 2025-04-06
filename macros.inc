@@ -1,6 +1,6 @@
 %macro EXIT 1
-  MOV rax, 60 ; exit syscall
   MOV rdi, %1
+  MOV rax, 60 ; exit syscall
   SYSCALL
 %endmacro
 
