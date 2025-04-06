@@ -21,8 +21,8 @@ _start:
 
 println:
   MOVZX eax, byte [rsi] ; moves zero-extended version of the byte that %rsi is pointing to
-  CMP al, 0
-  JE end_println
+  TEST al, al
+  JE .end_println
 
   MOV rax, 1 ; write syscall
   MOV rdi, 1 ; stdout
@@ -33,5 +33,5 @@ println:
   INC rsi
   JMP println
 
-  end_println: RET
+  .end_println: RET
 
