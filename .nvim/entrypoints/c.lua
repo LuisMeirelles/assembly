@@ -27,8 +27,11 @@ local function open_floating_terminal(cmd)
 	vim.bo[buf].filetype = "terminal"
 end
 
-function M.compile()
-	local output = vim.system({ "nasm", "-g", "-felf64", "main.asm" }, { text = true }):wait()
+function M.compile(entrypoint)
+	local output = vim.system(
+		{ "gcc", entrypoint.full_path, "-o", entrypoint.build_path .. entrypoint.filename },
+		{ text = true }
+	):wait()
 
 	if output.code ~= 0 then
 		vim.notify(output.stderr, vim.log.levels.ERROR)
@@ -36,35 +39,16 @@ function M.compile()
 	end
 end
 
-function M.link()
-	local output = vim.system({ "ld", "-o", "main", "main.o" }, { text = true }):wait()
-
-	if output.code ~= 0 then
-		vim.notify(output.stderr, vim.log.levels.ERROR)
-		return false
-	end
+function M.run(entrypoint)
+	open_floating_terminal(entrypoint.build_path .. entrypoint.filename)
 end
 
-function M.run()
-	open_floating_terminal("./main")
-end
-
-function M.build()
-	if M.compile() == false then
+function M.build_and_run(entrypoint)
+	if M.compile(entrypoint) == false then
 		return false
 	end
 
-	if M.link() == false then
-		return false
-	end
-end
-
-function M.build_and_run()
-	if M.build() == false then
-		return false
-	end
-
-	if M.run() == false then
+	if M.run(entrypoint) == false then
 		return false
 	end
 end
