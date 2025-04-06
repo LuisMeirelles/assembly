@@ -1,5 +1,6 @@
 section .data
   string db "teste", 0xa, 0
+  string_len db 6
 
 section .text
   global _start
@@ -9,7 +10,7 @@ println:
   MOV rdi, 1
   ; we can use rsi as parameter here, so code below is not needed
   ; MOV rsi, string
-  MOV rdx, 6
+  MOV rdx, [string_len]
   SYSCALL
   RET
 
