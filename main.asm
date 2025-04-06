@@ -4,34 +4,34 @@
   SYSCALL
 %endmacro
 
+%macro PRINT 1
+  LEA rsi, [rel %1] ; loading relative address of string head to %rsi
+  CALL println
+%endmacro
+
 section .data
-string db "testando", 0xa, 0
+  string db "testando", 0xa, 0
 
 section .text
   global _start
 
+_start:
+  PRINT string
+  EXIT 0
+
 println:
   MOVZX eax, byte [rsi] ; moves zero-extended version of the byte that %rsi is pointing to
   CMP al, 0
-  JE return
+  JE end_println
 
   MOV rax, 1 ; write syscall
   MOV rdi, 1 ; stdout
-  
-  ; uses rsi as parameter here, so code below is not needed
-  ; MOV rsi, string
-  
+ 
   MOV rdx, 1 ; chars count to be printed
   SYSCALL
 
   INC rsi
   JMP println
 
-  return: RET
-
-_start:
-  LEA rsi, [rel string] ; loading relative address of string head to %rsi
-  CALL println
-
-  EXIT 0
+  end_println: RET
 
