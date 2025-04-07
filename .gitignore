@@ -3,3 +3,9 @@ build/c/*
 
 !build/*/.gitkeep
 
+bin/*
+!bin/.gitkeep
+
+lib/*
+!lib/.gitkeep
+

@@ -1,21 +1,6 @@
-%include "macros.inc"
-
-section .bss
-  charbuf resb 1 ; char charbuf[1];
-
-section .data
-  string db "teste789", 0xa, 0 ; const char *string string = "teste\n"
-
 section .text
-  global _start
-
-_start:
-  PRINT string ; size_t written = print(string)
-  ADD eax, 48 ; written += 48
-  MOV [charbuf], rax ; charbuf[0] += written
-  PRINT charbuf ; print(charbuf)
-  
-  EXIT 0 ; return 0
+  global print
+  default rel
 
 ; public int print(const char *string)
 print:
@@ -33,7 +18,7 @@ print:
     MOV rsi, rdi
     MOV rax, 1 ; `write` syscall
     MOV rdi, 1 ; stdout
-  
+ 
     MOV rdx, 1 ; chars count to be printed
     SYSCALL
 
@@ -50,4 +35,6 @@ print:
   .end_print:
     MOV rax, rcx ; size_t value = count
     RET ; return value
+
+section .note.GNU-stack
 
