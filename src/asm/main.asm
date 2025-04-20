@@ -10,16 +10,29 @@ section .text
 extern print
 
 _start:
-  MOV rax, 0 ; sys_read
-  MOV rdi, 0 ; stdin file descriptor
-  LEA rsi, [buffer] ; load relative address (due `default rel` in .text section) into %rsi
-  MOV rdx, 1024 ; read up to 1024 bytes
+  LEA rdi, [buffer] ; load relative address (due `default rel` in .text section) into %rsi
 
-  SYSCALL
+  .loop:
+    MOV rax, 0 ; sys_read
+    MOV rsi, rdi ; pass the address of buffer as a sys_read argument
+    MOV rdi, 0 ; stdin file descriptor
+    MOV rdx, 1 ; reads 1 byte
 
-  PRINT buffer
- 
-  EXIT 0
+    SYSCALL
+
+    MOV rdi, rsi ; recover pointer to buffer into %rdi
+    MOVZX ebx, byte [rdi] ; get a byte in the %rdi position in memory
+
+    CMP bl, 0xa
+    JE .exit
+
+    INC rdi
+
+    JMP .loop
+
+  .exit:
+    PRINT buffer
+    EXIT 0
 
 section .note.GNU-stack
 
