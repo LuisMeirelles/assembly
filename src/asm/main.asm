@@ -1,10 +1,7 @@
 %include "macros.inc"
 
 section .bss
-  charbuf resb 1 ; char charbuf[1];
-
-section .data
-  string db "teste789", 0xa, 0 ; const char *string string = "teste\n"
+  buffer resb 1024 ; char buffer[1024];
 
 section .text
   global _start
@@ -13,12 +10,16 @@ section .text
 extern print
 
 _start:
-  PRINT string ; size_t written = print(string)
-  ADD eax, 48 ; written += 48
-  MOV [charbuf], rax ; charbuf[0] += written
-  PRINT charbuf ; print(charbuf)
+  MOV rax, 0 ; sys_read
+  MOV rdi, 0 ; stdin file descriptor
+  LEA rsi, [buffer] ; load relative address (due `default rel` in .text section) into %rsi
+  MOV rdx, 1024 ; read up to 1024 bytes
+
+  SYSCALL
+
+  PRINT buffer
  
-  EXIT 0 ; return 0
+  EXIT 0
 
 section .note.GNU-stack
 
