@@ -15,7 +15,7 @@ _start:
 
   PRINT buffer
 
-  EXIT 0
+  EXIT rax
 
 section .note.GNU-stack
 
