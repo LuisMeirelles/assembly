@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nasm -f elf64 -o build/asm/libprint.o src/lib/print.asm
+nasm -f elf64 -o build/asm/libprint.o -I src/asm src/lib/print.asm
 lib_compile=$?
 
 if [[ $lib_compile -ne 0 ]]; then

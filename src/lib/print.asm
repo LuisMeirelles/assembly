@@ -1,3 +1,5 @@
+%include "../asm/macros.inc"
+
 section .text
   global print
   default rel
@@ -15,12 +17,7 @@ print:
     MOV rbx, rcx ; moving ecx since ebx is not preserved in sys_write
 
     ; size_t written = write(1, &string, 1)
-    MOV rsi, rdi
-    MOV rax, 1 ; `write` syscall
-    MOV rdi, 1 ; stdout
- 
-    MOV rdx, 1 ; chars count to be printed
-    SYSCALL
+    SYS_WRITE 1, rdi, 1
 
     MOV rcx, rbx ; recovering ecx after syscall
 
