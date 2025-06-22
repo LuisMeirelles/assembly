@@ -1,6 +1,13 @@
 #!/bin/bash
 
-nasm -f elf64 -o build/asm/libprint.o src/lib/print.asm
+nasm -f elf64 -o build/asm/libprint.o -I src/asm src/lib/print.asm
+lib_compile=$?
+
+if [[ $lib_compile -ne 0 ]]; then
+  exit 1
+fi
+
+nasm -f elf64 -o build/asm/libreadline.o -I src/asm src/lib/read_line.asm
 lib_compile=$?
 
 if [[ $lib_compile -ne 0 ]]; then
@@ -14,7 +21,14 @@ if [[ $lib_archiving -ne 0 ]]; then
   exit 1
 fi
 
-gcc -o bin/main src/c/main.c -L lib -l print
+ar rcs lib/libreadline.a build/asm/libreadline.o
+lib_archiving=$?
+
+if [[ $lib_archiving -ne 0 ]]; then
+  exit 1
+fi
+
+gcc -o bin/main src/c/main.c -L lib -l print -l readline
 linking=$?
 
 if [[ $linking -ne 0 ]]; then

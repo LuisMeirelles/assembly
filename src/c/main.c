@@ -1,17 +1,16 @@
 #include <stdint.h>
 
 extern int print(const char *str);
+extern int read_line(const char *buffer);
 
 char charbuf[1];
 
 int main() {
-    uint32_t written = print("teste789\n");
+  char *buffer;
 
-    written += 48;
+  read_line(buffer);
 
-    charbuf[0] = written;
+  uint32_t written = print(buffer);
 
-    print(charbuf);
-
-    return 0;
+  return written;
 }
