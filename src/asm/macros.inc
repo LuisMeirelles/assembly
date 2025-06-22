@@ -14,6 +14,16 @@
   SYSCALL
 %endmacro
 
+%macro SYS_READ 3
+    MOV rax, 0 ; `read` syscall
+
+    MOV rsi, %2 ; buffer
+    MOV rdi, %1 ; file descriptor
+    MOV rdx, %3 ; count
+
+    SYSCALL
+%endmacro
+
 %macro PRINT 1
   LEA rdi, [rel %1] ; loading relative address of string head to %rdi
   CALL print

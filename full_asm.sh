@@ -7,7 +7,7 @@ if [[ $lib_compile -ne 0 ]]; then
   exit 1
 fi
 
-nasm -f elf64 -o build/asm/libread_line.o src/lib/read_line.asm
+nasm -f elf64 -o build/asm/libread_line.o -I src/asm src/lib/read_line.asm
 lib_compile=$?
 
 if [[ $lib_compile -ne 0 ]]; then
