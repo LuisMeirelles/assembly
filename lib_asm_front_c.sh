@@ -1,5 +1,10 @@
 #!/bin/bash
 
+rm build/asm/* >/dev/null 2>&1
+rm build/c/* >/dev/null 2>&1
+rm bin/* >/dev/null 2>&1
+rm lib/* >/dev/null 2>&1
+
 nasm -f elf64 -o build/asm/libprint.o -I src/asm src/lib/print.asm
 lib_compile=$?
 
